@@ -51,22 +51,24 @@ async function loadData() {
   const data = await res.json();
 
   const html = data.map(s => `
-    <div class="card ${s.status==="live"?"live":""}">
-      <img class="thumb"
-           src="/image?url=${encodeURIComponent(s.thumbnail)}&t=${Date.now()}"
-           onerror="this.src='';">
-      <div class="content">
-        <div class="name">${s.name}</div>
-        <div class="${s.status==="live"?"live-text":"offline-text"}">
-          ${s.status==="live"?"🟢 LIVE":"🔴 OFFLINE"}
+    <a href="https://chzzk.naver.com/${s.channelId}" target="_blank" style="text-decoration:none;color:inherit;">
+      <div class="card ${s.status==="live"?"live":""}">
+        <img class="thumb"
+             src="/image?url=${encodeURIComponent(s.thumbnail)}&t=${Date.now()}"
+             onerror="this.src='';">
+        <div class="content">
+          <div class="name">${s.name}</div>
+          <div class="${s.status==="live"?"live-text":"offline-text"}">
+            ${s.status==="live"?"🟢 LIVE":"🔴 OFFLINE"}
+          </div>
+          ${s.status==="live" ? `
+            <div>👥 ${s.viewers}명</div>
+            <div>${s.title}</div>
+            <div style="opacity:.6">${s.category}</div>
+          ` : ""}
         </div>
-        ${s.status==="live" ? `
-          <div>👥 ${s.viewers}명</div>
-          <div>${s.title}</div>
-          <div style="opacity:.6">${s.category}</div>
-        ` : ""}
       </div>
-    </div>
+    </a>
   `).join("");
 
   document.getElementById("list").innerHTML = html;

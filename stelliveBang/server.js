@@ -98,7 +98,7 @@ app.get("/api", async (req, res) => {
   const results = await Promise.all(
     streamers.map(async (s) => {
       const result = await checkLive(s.id);
-      return { name: s.name, ...result };
+      return { name: s.name, channelId: s.id, ...result };
     })
   );
 
